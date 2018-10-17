@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {UserIsNotAuthenticated} from './helpers/auth';
+import {UserIsAuthenticated} from './helpers/auth';
 
 import './App.scss';
 
@@ -11,6 +12,7 @@ import Navbar from './components/layout/Navbar';
 import Home from './components/layout/Home';
 import Login from './components/auth/Login';
 import ForgotPassword from "./components/auth/ForgotPassword";
+import ChangePassword from "./components/auth/ChangePassword";
 
 class App extends Component {
   render() {
@@ -24,6 +26,7 @@ class App extends Component {
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/login" component={UserIsNotAuthenticated(Login)}/>
                 <Route exact path="/forgotpassword" component={UserIsNotAuthenticated(ForgotPassword)}/>
+                <Route exact path="/changepassword" component={UserIsAuthenticated(ChangePassword)}/>
               </Switch>
             </div>
           </div>
