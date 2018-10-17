@@ -28,6 +28,7 @@ class Navbar extends Component {
 
   render() {
     const {isAuthenticated} = this.state;
+    const {auth} = this.props;
 
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -38,20 +39,16 @@ class Navbar extends Component {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to="/" className="nav-link">Home</Link>
-            </li>
-            {isAuthenticated ? (
+          {isAuthenticated ? (
+            <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link to="#!" className="nav-link" onClick={this.onLogout}>Logout</Link>
+                <a href="#!" className="nav-link">{auth.email}</a>
               </li>
-            ) : (
               <li className="nav-item">
-                <Link to="/login" className="nav-link">Login</Link>
+                <Link to="#!" className="nav-link" onClick={this.onLogout}><i className="fas fa-sign-out-alt" /></Link>
               </li>
-            )}
-          </ul>
+            </ul>
+          ) : null}
         </div>
       </nav>
     );

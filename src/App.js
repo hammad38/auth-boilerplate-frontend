@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import {UserIsAuthenticated} from './helpers/auth';
 import {UserIsNotAuthenticated} from './helpers/auth';
 
 import './App.scss';
