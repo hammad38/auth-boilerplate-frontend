@@ -1,47 +1,46 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {compose} from 'redux';
-import {connect} from 'react-redux';
-import {firebaseConnect} from 'react-redux-firebase';
+import {compose} from "redux";
+import {firebaseConnect} from "react-redux-firebase";
+import connect from "react-redux/es/connect/connect";
 import {notifyUser} from "../../actions/notifyActions";
 
 import Alert from '../layout/Alert';
 
-class Login extends Component {
+class ForgotPassword extends Component {
   state = {
-    email: '',
-    password: ''
+    email: ''
   }
 
   onChange = e => {
-    this.setState({[e.target.name]: e.target.value})
+    this.setState({[e.target.name]: e.target.value});
   }
 
   onSubmit = e => {
     e.preventDefault();
-
     const {firebase, notifyUser} = this.props;
-    const {email, password} = this.state;
+    const {email} = this.state;
 
-    firebase.login({
-      email,
-      password
-    }).catch(err => {
-      let message = err.code.split("auth/").pop();
-      notifyUser(message, 'error');
-    });
+    firebase
+      .auth().sendPasswordResetEmail(email)
+      .then(res => {
+        notifyUser(`Password reset link sent to: ${email}`, 'success');
+      })
+      .catch(err => {
+        let message = err.code.split("auth/").pop();
+        notifyUser(message, 'error');
+      });
   }
 
   render() {
-    const {email, password} = this.state;
+    const {email} = this.state;
     const {message, messageType} = this.props.notify;
 
     return (
       <div>
         <div className="card mt-4">
           <div className="card-header">
-            <h1 className="text-center"><i className="fas fa-lock"/> Login</h1>
+            <h1 className="text-center"><i className="fas fa-key"/> Reset Password</h1>
           </div>
           <div className="card-body">
             {message ? (
@@ -62,20 +61,7 @@ class Login extends Component {
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="password"><i className="fas fa-key"/> Password</label>
-                <input
-                  className="form-control"
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  onChange={this.onChange}
-                  value={password}
-                  required
-                />
-              </div>
-              <button type="submit" className="btn btn-primary float-left">Login</button>
-              <Link to="/forgotpassword" className="float-right mt-2">Forgot Your Password?</Link>
+              <button type="submit" className="btn btn-primary float-right">Rest Password</button>
             </form>
           </div>
         </div>
@@ -84,7 +70,7 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
+ForgotPassword.propTypes = {
   firebase: PropTypes.object.isRequired,
   notify: PropTypes.object.isRequired,
   notifyUser: PropTypes.func.isRequired
@@ -95,4 +81,4 @@ export default compose(
   connect((state, props) => ({
     notify: state.notify
   }), {notifyUser})
-)(Login);
+)(ForgotPassword);

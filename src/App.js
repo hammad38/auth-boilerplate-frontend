@@ -10,6 +10,7 @@ import store from './store';
 import Navbar from './components/layout/Navbar';
 import Home from './components/layout/Home';
 import Login from './components/auth/Login';
+import ForgotPassword from "./components/auth/ForgotPassword";
 
 class App extends Component {
   render() {
@@ -22,6 +23,7 @@ class App extends Component {
               <Switch>
                 <Route exact path="/" component={Home}/>
                 <Route exact path="/login" component={UserIsNotAuthenticated(Login)}/>
+                <Route exact path="/forgotpassword" component={UserIsNotAuthenticated(ForgotPassword)}/>
               </Switch>
             </div>
           </div>
