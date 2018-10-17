@@ -1,19 +1,30 @@
 import React, { Component } from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+
 import './App.scss';
 
 import { Provider } from 'react-redux';
 import store from './store';
 
-import Spinner from './components/layout/Spinner';
+import Navbar from './components/layout/Navbar';
+import Home from './components/layout/Home';
+import Login from './components/auth/Login';
 
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <div className="App">
-          React App
-          <Spinner/>
-        </div>
+        <Router>
+          <div className="App">
+            <Navbar/>
+            <div className="container">
+              <Switch>
+                <Route exact path="/" component={Home}/>
+                <Route exact path="/user/login" component={Login}/>
+              </Switch>
+            </div>
+          </div>
+        </Router>
       </Provider>
     );
   }
