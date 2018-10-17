@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {UserIsAuthenticated} from './helpers/auth';
+import {UserIsNotAuthenticated} from './helpers/auth';
 
 import './App.scss';
 
@@ -20,7 +22,7 @@ class App extends Component {
             <div className="container">
               <Switch>
                 <Route exact path="/" component={Home}/>
-                <Route exact path="/user/login" component={Login}/>
+                <Route exact path="/login" component={UserIsNotAuthenticated(Login)}/>
               </Switch>
             </div>
           </div>

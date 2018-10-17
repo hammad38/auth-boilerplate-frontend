@@ -1,8 +1,34 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import {compose} from "redux";
+import {firebaseConnect} from "react-redux-firebase";
+import connect from "react-redux/es/connect/connect";
 
 class Navbar extends Component {
+  state = {
+    isAuthenticated: false
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const {auth} = props;
+
+    if(auth.uid) {
+      return {isAuthenticated: true}
+    } else {
+      return {isAuthenticated: false}
+    }
+  }
+
+  onLogout = e => {
+    e.preventDefault();
+    const {firebase} = this.props;
+    firebase.logout();
+  }
+
   render() {
+    const {isAuthenticated} = this.state;
+
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
         <Link to="/" className="navbar-brand">Brand</Link>
@@ -16,9 +42,15 @@ class Navbar extends Component {
             <li className="nav-item">
               <Link to="/" className="nav-link">Home</Link>
             </li>
-            <li className="nav-item">
-              <Link to="/user/login" className="nav-link">Login</Link>
-            </li>
+            {isAuthenticated ? (
+              <li className="nav-item">
+                <Link to="#!" className="nav-link" onClick={this.onLogout}>Logout</Link>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <Link to="/login" className="nav-link">Login</Link>
+              </li>
+            )}
           </ul>
         </div>
       </nav>
@@ -26,4 +58,14 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+Navbar.propTypes = {
+  firebase: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+}
+
+export default compose(
+  firebaseConnect(),
+  connect((state, props) => ({
+    auth: state.firebase.auth
+  }))
+)(Navbar);
